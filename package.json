@@ -2,11 +2,11 @@
 	"name": "chordictionary",
 	"version": "0.2.0-SNAPSHOT",
 	"description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
-	"main": "./build/commonjs/chordictionary.min.js",
 	"scripts": {
-		"test": "./node_modules/gulp/bin/gulp.js && npm run qunit",
-		"qunit": "./node_modules/qunit/bin/qunit.js _tests/test-commonjs.js",
-		"release": "bash release.sh"
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview",
+		"clean": "npx rimraf dist"
 	},
 	"repository": {
 		"type": "git",
@@ -31,16 +31,7 @@
 	"homepage": "https://www.chordictionary.com",
 	"dependencies": {},
 	"devDependencies": {
-		"@babel/preset-env": "^7.5.5",
-		"gulp": "^4.0.2",
-		"gulp-babel": "8.0.0",
-		"gulp-babel-minify": "^0.5.1",
-		"gulp-clean": "^0.4.0",
-		"gulp-csso": "^4.0.1",
-		"gulp-eslint": "^6.0.0",
-		"gulp-minify": "^3.1.0",
-		"gulp-rename": "^2.0.0",
-		"gulp-rollup": "^2.16.2",
-		"qunit": "^2.9.2"
+		"sass": "^1.69.5",
+		"vite": "^4.5.0"
 	}
 }

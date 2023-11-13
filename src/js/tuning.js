@@ -4,11 +4,7 @@
 */
 export function isValid (tuning) {
 	let pattern = new RegExp("^[#a-g]+$", "i");
-	if (pattern.test(tuning)) {
-		return true;
-	} else {
-		return false;
-	}
+	return pattern.test(tuning);
 }
 
 /** Split tuning into notes

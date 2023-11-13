@@ -1,4 +1,3 @@
 /node_modules
 .DS_Store
-chordictionary.tar.gz
-chordictionary.zip
+*.log
