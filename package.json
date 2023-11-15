@@ -18,7 +18,6 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"clean": "npx rimraf dist",
 		"test": "jasmine"
 	},
 	"repository": {
@@ -44,6 +43,7 @@
 	"homepage": "https://www.chordictionary.com",
 	"dependencies": {},
 	"devDependencies": {
+		"@types/jasmine": "^5.1.2",
 		"chai": "^4.3.10",
 		"eslint": "^8.53.0",
 		"jasmine": "^5.1.0",
