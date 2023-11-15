@@ -3,18 +3,18 @@
 * @return {Array} The indexes of the diplicated entries
 */
 export function dedupListOfLists(haystack) {
-	let seen = [];
-	let duplicates = [];
+    let seen = [];
+    let duplicates = [];
 
-	for (let i = 0; i < haystack.length; i++) {
-		let needle = haystack[i].filter(n => (n != null)).join("");
-		if (seen.includes(needle)) {
-			duplicates.push(i);
-		} else {
-			seen.push(needle);
-		}
-	}
-	return duplicates;
+    for (let i = 0; i < haystack.length; i++) {
+        let needle = haystack[i].filter(n => (n != null)).join("");
+        if (seen.includes(needle)) {
+            duplicates.push(i);
+        } else {
+            seen.push(needle);
+        }
+    }
+    return duplicates;
 }
 
 /** Search for a keyword inside an object
@@ -24,30 +24,30 @@ export function dedupListOfLists(haystack) {
 * @return {Boolean} | false if no result
 */
 export function searchInObject(obj, keyword) {
-	if(typeof obj === "object") {
-		if(typeof keyword === "string") {
-			keyword = keyword.toLowerCase();
-		}
+    if(typeof obj === "object") {
+        if(typeof keyword === "string") {
+            keyword = keyword.toLowerCase();
+        }
 
-		for (let i = 0; i < obj.length; i++) {
+        for (let i = 0; i < obj.length; i++) {
 
-			for (let key in obj[i]) {
+            for (let key in obj[i]) {
 
-				if (obj[i][key] === keyword) {
-					return obj[i];
+                if (obj[i][key] === keyword) {
+                    return obj[i];
 
-				} else if(typeof obj[i][key] === "string") {
+                } else if(typeof obj[i][key] === "string") {
 
-					if (obj[i][key].toLowerCase() === keyword) {
-						return obj[i];
-					}
-				}
-			}
-		}
-		throw "Couldn't find " + keyword + " in " + obj;
-	} else {
-		throw obj +" is not an object.";
-	}
+                    if (obj[i][key].toLowerCase() === keyword) {
+                        return obj[i];
+                    }
+                }
+            }
+        }
+        throw "Couldn't find " + keyword + " in " + obj;
+    } else {
+        throw obj +" is not an object.";
+    }
 }
 
 /** Find the minimum/maximum int in an array ignoring any NaN value OR Find an occurrences of a keyword in an array
@@ -56,68 +56,68 @@ export function searchInObject(obj, keyword) {
 * @param {String} what | Required | "min" or "max" or a keyword to search for
 */
 export function arrayFind(arr, what) {
-	let result = false;
+    let result = false;
 
-	if (!Array.isArray(arr)) {
-		throw arr + " is not an array.";
-	}
-	if (typeof what === "undefined") {
-		throw "Missing parameter.";
-	}
+    if (!Array.isArray(arr)) {
+        throw arr + " is not an array.";
+    }
+    if (typeof what === "undefined") {
+        throw "Missing parameter.";
+    }
 
-	switch (what) {
+    switch (what) {
 
-		case "min":
-			result = Math.min.apply(Math, arr);
+    case "min":
+        result = Math.min.apply(Math, arr);
 
-			if(!isNaN(result)) {
-				return result;
-			} else {
+        if(!isNaN(result)) {
+            return result;
+        } else {
 
-				for (let i = 0; i < arr.length; i++) {
+            for (let i = 0; i < arr.length; i++) {
 
-					if (isNaN(arr[i])) {
-						continue;
-					} else if (isNaN(result)) {
-						result = arr[i];
-						continue;
-					} else if (arr[i] < result) {
-						result = arr[i];
-					} else {
-						continue;
-					}
-				}
-			}
-			break;
+                if (isNaN(arr[i])) {
+                    continue;
+                } else if (isNaN(result)) {
+                    result = arr[i];
+                    continue;
+                } else if (arr[i] < result) {
+                    result = arr[i];
+                } else {
+                    continue;
+                }
+            }
+        }
+        break;
 
-		case "max":
-			result = Math.max.apply(Math, arr);
+    case "max":
+        result = Math.max.apply(Math, arr);
 
-			if(!isNaN(result)) {
-				return result;
-			} else {
+        if(!isNaN(result)) {
+            return result;
+        } else {
 
-				for (let i = 0; i < arr.length; i++) {
+            for (let i = 0; i < arr.length; i++) {
 
-					if (isNaN(arr[i])) {
-						continue;
-					} else if (isNaN(result)) {
-						result = arr[i];
-						continue;
-					} else if (arr[i] > result) {
-						result = arr[i];
-					} else {
-						continue;
-					}
-				}
-			}
-			break;
+                if (isNaN(arr[i])) {
+                    continue;
+                } else if (isNaN(result)) {
+                    result = arr[i];
+                    continue;
+                } else if (arr[i] > result) {
+                    result = arr[i];
+                } else {
+                    continue;
+                }
+            }
+        }
+        break;
 
-		default:
-			result = occurrences(arr.join(""), what);
-			break;
-	}
-	return result;
+    default:
+        result = occurrences(arr.join(""), what);
+        break;
+    }
+    return result;
 }
 
 /** Function count the occurrences of substring in a string;
@@ -127,28 +127,26 @@ export function arrayFind(arr, what) {
 * @author Vitim.us http://stackoverflow.com/questions/4009756/how-to-count-string-occurrence-in-string/7924240#7924240
 */
 export function occurrences(string, subString, allowOverlapping) {
-	string += "";
-	subString += "";
+    string += "";
+    subString += "";
 
-	if (subString.length <= 0) {
-		return (string.length + 1);
-	}
+    if (subString.length <= 0) {
+        return (string.length + 1);
+    }
 
-	let n = 0,
-		pos = 0,
-		step = allowOverlapping ? 1 : subString.length;
+    let n = 0,
+        pos = 1, // 1 just to enter the while loop
+        step = allowOverlapping ? 1 : subString.length;
 
-	while (true) {
-		pos = string.indexOf(subString, pos);
+    while (pos >= 0) {
+        pos = string.indexOf(subString, pos);
 
-		if (pos >= 0) {
-			++n;
-			pos += step;
-		} else {
-			break;
-		}
-	}
-	return n;
+        if (pos >= 0) {
+            ++n;
+            pos += step;
+        }
+    }
+    return n;
 }
 
 /** Count the number of occurrences of every items in an array
@@ -157,17 +155,17 @@ export function occurrences(string, subString, allowOverlapping) {
 */
 export function countOccurences(array) {
 
-	if (Array.isArray(array)) {
-		let result = {};
+    if (Array.isArray(array)) {
+        let result = {};
 
-		for(let i = 0; i < array.length; ++i) {
+        for(let i = 0; i < array.length; ++i) {
 
-			if(!result[array[i]])
-				result[array[i]] = 0;
-			++result[array[i]];
-		}
-		return result;
-	} else {
-		throw array + " is not an array.";
-	}
+            if(!result[array[i]])
+                result[array[i]] = 0;
+            ++result[array[i]];
+        }
+        return result;
+    } else {
+        throw array + " is not an array.";
+    }
 }

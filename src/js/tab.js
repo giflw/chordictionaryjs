@@ -8,12 +8,12 @@ import * as INTERVAL from "./interval";
 * @return {Boolean}
 */
 export function isValid (tab) {
-	let pattern = new RegExp("^[x0-9]*$", "i");
-	if (pattern.test(tab)) {
-		return true;
-	} else {
-		return false;
-	}
+    let pattern = new RegExp("^[x0-9]*$", "i");
+    if (pattern.test(tab)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /** Split the tab into frets
@@ -22,43 +22,43 @@ export function isValid (tab) {
 * @return {Array} | Containing each fret
 */
 export function parse(tab, tuning) {
-	tab = tab.toLowerCase();
-	tuning = tuning || "EADGBE";
+    tab = tab.toLowerCase();
+    tuning = tuning || "EADGBE";
 
-	let tabArray = []; 
+    let tabArray = []; 
 
-	if (tab.length <= tuning.length) {
-		return tab.split("");
-	} else if (tab.length === tuning.length * 2) {
+    if (tab.length <= tuning.length) {
+        return tab.split("");
+    } else if (tab.length === tuning.length * 2) {
 
-		for (let i = 0; i < tab.length; i++) {
-			if (!(i % 2)) {
-				tabArray.push(tab.slice(i, i+2));
-			}
-		}
-		return tabArray;
+        for (let i = 0; i < tab.length; i++) {
+            if (!(i % 2)) {
+                tabArray.push(tab.slice(i, i+2));
+            }
+        }
+        return tabArray;
 
-	} else if (tab.length > tuning.length) {
+    } else if (tab.length > tuning.length) {
 
-		if (arrayFind(tab.split(""), "max") > 1) {
-			// NOTE: Split after each caracter from [2-9]
-			for (let i = 0; i < tab.length; i++) {
+        if (arrayFind(tab.split(""), "max") > 1) {
+            // NOTE: Split after each caracter from [2-9]
+            for (let i = 0; i < tab.length; i++) {
 
-				if (tab.charAt(i).search(/[x02-9]/i) !== -1 || (tab.charAt(i) === 1 && tab.charAt(i+1).search(/x/i) !== -1)) {
-					tabArray.push(tab.slice(i, i+1));
+                if (tab.charAt(i).search(/[x02-9]/i) !== -1 || (tab.charAt(i) === 1 && tab.charAt(i+1).search(/x/i) !== -1)) {
+                    tabArray.push(tab.slice(i, i+1));
 
-				} else if (tab.charAt(i+1).search(/x/i) === -1) {
-					tabArray.push(tab.slice(i, i+2));
-					i++;
-				}
-			}
-			return tabArray;
-		} else {
-			throw WORDING.invalidTab;
-		}
-	} else {
-		return false;
-	}
+                } else if (tab.charAt(i+1).search(/x/i) === -1) {
+                    tabArray.push(tab.slice(i, i+2));
+                    i++;
+                }
+            }
+            return tabArray;
+        } else {
+            throw WORDING.invalidTab;
+        }
+    } else {
+        return false;
+    }
 }
 
 /** Return a list of notes for a given tab (from lowest to highest note)
@@ -67,26 +67,26 @@ export function parse(tab, tuning) {
 * @return {array}
 */
 export function toNotes(tab, tuning) {
-	let index,  		// Position of the note in the scale
-		stringRootNote, // Guitar string currently analysed
-		notes = [];
+    let index,  		// Position of the note in the scale
+        stringRootNote, // Guitar string currently analysed
+        notes = [];
 
-	for (let i = 0; i < tab.length; i++) {
-		// If it's not a fret number, else it IS a fret number
-		if (isNaN(tab[i])) {
-			notes.push("x");
-		} else {
-			// Convert the note to the given scale and get its position
-			stringRootNote = tuning[i];
-			index = parseInt(tab[i]) + NOTES.indexOf(stringRootNote);
-			// Store each notes names
-			if (index > (NOTES.length - 1)) {
-				index = index - NOTES.length;
-			}
-			notes.push(NOTES[index]);
-		}
-	}
-	return notes;
+    for (let i = 0; i < tab.length; i++) {
+        // If it's not a fret number, else it IS a fret number
+        if (isNaN(tab[i])) {
+            notes.push("x");
+        } else {
+            // Convert the note to the given scale and get its position
+            stringRootNote = tuning[i];
+            index = parseInt(tab[i]) + NOTES.indexOf(stringRootNote);
+            // Store each notes names
+            if (index > (NOTES.length - 1)) {
+                index = index - NOTES.length;
+            }
+            notes.push(NOTES[index]);
+        }
+    }
+    return notes;
 }
 
 /** Return all the possible formulas in integer notation for a given tab such as [null, 0, 4, 0, 4, 7]
@@ -95,32 +95,32 @@ export function toNotes(tab, tuning) {
 * @return {object}
 */
 export function getSemitones(notes) {
-	let semitones = [];	// Raw formulas for each potential roots
+    let semitones = [];	// Raw formulas for each potential roots
 
-	// For each string, consider a root and calculate intervals to get a formula
-	for (let i = 0; i < notes.length; i++) {
-		var formula = [];
+    // For each string, consider a root and calculate intervals to get a formula
+    for (let i = 0; i < notes.length; i++) {
+        var formula = [];
 
-		// Skip string if it is not played (x or undefined) as it can't be the root
-		if (!notes[i] || notes[i].toLowerCase() === "x") {
-			continue;
-		}
+        // Skip string if it is not played (x or undefined) as it can't be the root
+        if (!notes[i] || notes[i].toLowerCase() === "x") {
+            continue;
+        }
 
-		// For each note in the chord
-		for (let j = 0; j < notes.length; j++) {
-			// if it is not a note, there's no interval, push "x"
-			if (!notes[j] || notes[j].toLowerCase() === "x") {
-				formula.push(null);
-				continue;
-			}
+        // For each note in the chord
+        for (let j = 0; j < notes.length; j++) {
+            // if it is not a note, there's no interval, push "x"
+            if (!notes[j] || notes[j].toLowerCase() === "x") {
+                formula.push(null);
+                continue;
+            }
 
-			let interval = INTERVAL.get(notes[i], notes[j]);
+            let interval = INTERVAL.get(notes[i], notes[j]);
 
-			// Store the formula
-			formula.push(interval);
-		}
-		// Store the formula inly if it has a root
-		if (formula.includes(0)) semitones.push(formula);
-	}
-	return semitones;
+            // Store the formula
+            formula.push(interval);
+        }
+        // Store the formula inly if it has a root
+        if (formula.includes(0)) semitones.push(formula);
+    }
+    return semitones;
 }
