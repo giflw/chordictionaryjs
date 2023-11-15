@@ -464,9 +464,12 @@ export class Instrument {
 
                     if (fretOnString === 0) {
                         chordLayout += "<th><div class=\"dot open\"></div></th>";
+                    } else if (Number.isNaN(fretOnString)) {
+                        chordLayout += "<th><div class=\"x\"></div></th>";
                     } else {
                         chordLayout += "<th></th>";
                     }
+                    console.log(gtrFret, gtrString, fretOnString);
                 } else if (fretOnString === (base + gtrFret - 1)) {
                     chordLayout += "<td><div class=\"dot plain\">"+ fretsLabel[gtrString] +"</div></td>";
                 } else {
