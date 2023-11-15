@@ -1,5 +1,8 @@
-import * as chordictionary from "@scripts/main.js";
+import { Instrument } from "@scripts/chordictionary.js";
 
-let myInstrument = new chordictionary.Instrument("EADGBE", 24, 7, 4);
-let chordLayout = myInstrument.getChordLayout("XX0232", { name: "C Major", notes:["x", "C", "E", "G", "C", "E"] });
-document.querySelector(".chords").innerHTML = chordLayout;
+let instrument = new Instrument("EADGBE", 5, 5, 4);
+document.querySelectorAll(".chords > *").forEach( el => {
+    const name = el.innerText;
+    const tab = instrument.getChordsList(name, 1, 0).chordList[0]?.tab.join("");
+    el.innerHTML = tab + instrument.getChordLayout( tab, { name });
+});

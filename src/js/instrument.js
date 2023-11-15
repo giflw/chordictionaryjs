@@ -469,7 +469,6 @@ export class Instrument {
                     } else {
                         chordLayout += "<th></th>";
                     }
-                    console.log(gtrFret, gtrString, fretOnString);
                 } else if (fretOnString === (base + gtrFret - 1)) {
                     chordLayout += "<td><div class=\"dot plain\">"+ fretsLabel[gtrString] +"</div></td>";
                 } else {

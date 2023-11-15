@@ -2,13 +2,10 @@
 
 import "@styles/main.scss";
 
-import { WORDING } from "./wordings";
 import { NOTES } from "./notes";
-import * as INTERVAL from "./interval";
 import * as CHORD from "./chords";
 import * as TUNING from "./tuning";
 import * as TAB from "./tab";
-import * as TOOLS from "./tools";
 import { Instrument } from "./instrument";
 
 const isValidTab = TAB.isValid;
