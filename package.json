@@ -2,6 +2,18 @@
 	"name": "chordictionary",
 	"version": "0.2.0-SNAPSHOT",
 	"description": "A Javascript library for dynamic chord recognition, generation and graphic representation for any fretted instrument.",
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"module": "./dist/chordictionary.js",
+	"main": "./dist/chordictionary.cjs",
+	"exports": {
+		".": {
+			"import": "./dist/chordictionary.js",
+			"require": "./dist/chordictionary.cjs"
+		}
+	},
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",

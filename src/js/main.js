@@ -1,5 +1,7 @@
 /**Chordictionary v0.1.0-beta.4, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 
+import '@styles/main.scss';
+
 import { WORDING } from "./wordings";
 import { NOTES } from "./notes";
 import * as INTERVAL from "./interval";

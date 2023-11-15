@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 import * as path from 'path';
 
+const LIB_NAME = 'chordictionary';
+
 export default defineConfig({
   base: './',
   resolve: {
@@ -13,6 +15,20 @@ export default defineConfig({
     }
   },
   build: {
-    sourcemap: false,
-  },
+    lib: {
+      name: LIB_NAME,
+      entry: path.resolve(__dirname, './src/js/main.js'),
+      formats: ['es', 'cjs', 'iife', 'umd'],
+    },
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name == 'style.css') {
+            return `${LIB_NAME}.css`;
+          }
+          return assetInfo.name;
+        },
+      }
+    }
+  }
 });
