@@ -1,6 +1,6 @@
-import { NOTES }from "./notes";
-import { DIATONIC }from "./interval";
-import { WORDING } from "./wordings";
+import { NOTES }from "./notes.js";
+import { DIATONIC }from "./interval.js";
+import { WORDING } from "./wordings.js";
 
 /**
 * @const {Object} | Formulas, names and suffix for each chord quality

@@ -1,12 +1,10 @@
 /**Chordictionary v0.1.0-beta.4, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 
-import "@styles/main.scss";
-
-import { NOTES } from "./notes";
-import * as CHORD from "./chords";
-import * as TUNING from "./tuning";
-import * as TAB from "./tab";
-import { Instrument } from "./instrument";
+import { NOTES } from "./notes.js";
+import * as CHORD from "./chords.js";
+import * as TUNING from "./tuning.js";
+import * as TAB from "./tab.js";
+import { Instrument } from "./instrument.js";
 
 const isValidTab = TAB.isValid;
 const isValidTuning = TUNING.isValid;

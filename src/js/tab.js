@@ -1,7 +1,7 @@
-import { WORDING } from "./wordings";
-import { NOTES } from "./notes";
-import { arrayFind } from "./tools";
-import * as INTERVAL from "./interval";
+import { WORDING } from "./wordings.js";
+import { NOTES } from "./notes.js";
+import { arrayFind } from "./tools.js";
+import * as INTERVAL from "./interval.js";
 
 /** Return true if tab contains only digits or the letter x
 * @param {String} tab | Required | The tab to check for validity
@@ -24,6 +24,10 @@ export function isValid (tab) {
 export function parse(tab, tuning) {
     tab = tab.toLowerCase();
     tuning = tuning || "EADGBE";
+
+    if (!isValid(tab)) {
+        throw WORDING.invalidTab;
+    }
 
     let tabArray = []; 
 

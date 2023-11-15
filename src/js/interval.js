@@ -1,4 +1,4 @@
-import { NOTES } from "./notes";
+import { NOTES } from "./notes.js";
 
 /**
 * @const {Array} | List of diatonic intervals

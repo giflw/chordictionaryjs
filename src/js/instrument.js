@@ -1,14 +1,12 @@
 /**Chordictionary v0.1.0-beta.4, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 
-import "@styles/main.scss";
-
-import { WORDING } from "./wordings";
-import { NOTES } from "./notes";
-import * as INTERVAL from "./interval";
-import * as CHORD from "./chords";
-import * as TUNING from "./tuning";
-import * as TAB from "./tab";
-import * as TOOLS from "./tools";
+import { WORDING } from "./wordings.js";
+import { NOTES } from "./notes.js";
+import * as INTERVAL from "./interval.js";
+import * as CHORD from "./chords.js";
+import * as TUNING from "./tuning.js";
+import * as TAB from "./tab.js";
+import * as TOOLS from "./tools.js";
 
 export class Instrument {
 

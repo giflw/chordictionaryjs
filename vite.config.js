@@ -18,7 +18,7 @@ export default defineConfig({
     build: {
         lib: {
             name: LIB_NAME,
-            entry: path.resolve(__dirname, "./src/js/chordictionary.js"),
+            entry: path.resolve(__dirname, "./src/main.js"),
             formats: ["es", "cjs", "iife", "umd"],
         },
         rollupOptions: {
