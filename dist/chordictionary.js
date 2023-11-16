@@ -360,7 +360,7 @@ class Y {
       for (let o = 0; o < e.length; o++) {
         let a = B([...e][o]);
         if (a) {
-          var u = [...new Set(e[o])].filter((g) => !isNaN(g) && g !== null && g !== void 0).sort((g, m) => g - m).map((g) => T[g]);
+          var u = [...new Set(e[o])].filter((g) => !isNaN(g) && g !== null && g !== void 0).sort((g, c) => g - c).map((g) => T[g]);
           r.push({
             formula: u,
             semitones: a.semitones,
@@ -440,26 +440,26 @@ class Y {
       let h = parseInt(s[f]) + parseInt(p);
       h > d.length - 1 && (h = h - d.length), r.push(d[h]);
     }
-    let a = [], g, m = 0;
-    for (m = 0; m < this.tuning.length; m++) {
-      a[m] = [], a[m].push("x");
+    let a = [], g, c = 0;
+    for (c = 0; c < this.tuning.length; c++) {
+      a[c] = [], a[c].push("x");
       for (let f = 0; f < r.length; f++)
-        g = d.indexOf(r[f]) - d.indexOf(this.tuning[m]), g < 0 && (g = d.length + g), a[m].push(g), g + 12 < this.fretNumber && a[m].push(g + 12);
+        g = d.indexOf(r[f]) - d.indexOf(this.tuning[c]), g < 0 && (g = d.length + g), a[c].push(g), g + 12 < this.fretNumber && a[c].push(g + 12);
     }
-    let c = [];
-    for (m = 0; m < this.tuning.length; m++) {
-      let f = c.length;
-      for (let h = 0; h < a[m].length; h++)
-        if (c[h])
+    let m = [];
+    for (c = 0; c < this.tuning.length; c++) {
+      let f = m.length;
+      for (let h = 0; h < a[c].length; h++)
+        if (m[h])
           for (let x = 0; x < f; x++)
             if (h === 0)
-              c[x].push(a[m][h]);
+              m[x].push(a[c][h]);
             else {
-              let j = c[x].slice(0);
-              j.pop(), j.push(a[m][h]), c.push(j);
+              let j = m[x].slice(0);
+              j.pop(), j.push(a[c][h]), m.push(j);
             }
         else
-          c[h] = [a[m][h]];
+          m[h] = [a[c][h]];
     }
     let w = [], G = (f, h) => {
       for (let x in f)
@@ -475,29 +475,29 @@ class Y {
       return !0;
     };
     try {
-      for (let f = e; f < c.length; f++) {
-        if (R(c[f], r, this.tuning) && A(c[f], "max") - A(c[f], "min") < this.maxSpan) {
+      for (let f = e; f < m.length; f++) {
+        if (R(m[f], r, this.tuning) && A(m[f], "max") - A(m[f], "min") < this.maxSpan) {
           let h = {
             openString: !1,
             frettedNotes: 0
-          }, x = c[f].join(""), j = /[0-9]+[x]+[0-9]+/gi, S = /[0-9]+[x]+/gi;
+          }, x = m[f].join(""), j = /[0-9]+[x]+[0-9]+/gi, S = /[0-9]+[x]+/gi;
           j.test(x) ? h.splittedChord = !0 : h.splittedChord = !1, S.test(x) ? h.noMuteAfterFirstNote = !1 : h.noMuteAfterFirstNote = !0;
-          for (let M = 0; M < c[f].length; M++) {
-            let y = c[f][M];
+          for (let M = 0; M < m[f].length; M++) {
+            let y = m[f][M];
             if (!isNaN(y)) {
               let E = y + d.indexOf(this.tuning[M]);
-              y === 0 && (h.openString = !0), p === E && (h.frettedNotes === 0 && (h.rootIsLowestNote = !0), h.rootBelow4thFret = y <= 4, h.rootOnLowestFret = A(c[f], "min") >= y), (y > 0 && M < c[f].length - 1 && y === c[f][M - 1] || A(c[f], y) >= 3) && (h.barredString = isNaN(h.barredString) ? 1 : h.barredString + 1), h.frettedNotes++;
+              y === 0 && (h.openString = !0), p === E && (h.frettedNotes === 0 && (h.rootIsLowestNote = !0), h.rootBelow4thFret = y <= 4, h.rootOnLowestFret = A(m[f], "min") >= y), (y > 0 && M < m[f].length - 1 && y === m[f][M - 1] || A(m[f], y) >= 3) && (h.barredString = isNaN(h.barredString) ? 1 : h.barredString + 1), h.frettedNotes++;
             }
           }
           let O = {
-            tab: c[f],
+            tab: m[f],
             tag: []
           };
           Object.getOwnPropertyNames(o).forEach((M) => {
             G(o[M], h) && O.tag.indexOf(M) && O.tag.push(M);
           }), w.push(O);
         }
-        if (i > 0 && i < c[f].length && w.length === i) {
+        if (i > 0 && i < m[f].length && w.length === i) {
           e = f + 1;
           break;
         }
@@ -537,9 +537,9 @@ class Y {
     for (let a = 0; a < l; a++) {
       let g = a + o - 1;
       o === 1 && a === 0 && (r += "<thead>"), g % 2 && g > 0 ? r += '<tr><th class="fret-number">' + g + "</th>" : r += "<tr><th></th>";
-      for (let m = 0; m < this.tuning.length; m++) {
-        let c = parseInt(e[m]);
-        a === 0 ? c === 0 ? r += '<th><div class="dot open"></div></th>' : Number.isNaN(c) ? r += '<th><div class="x"></div></th>' : r += "<th></th>" : c === o + a - 1 ? r += '<td><div class="dot plain">' + u[m] + "</div></td>" : r += "<td></td>";
+      for (let c = 0; c < this.tuning.length; c++) {
+        let m = parseInt(e[c]);
+        a === 0 ? m === 0 ? r += '<th><div class="dot open">' + u[c] + "</div></th>" : Number.isNaN(m) ? r += '<th><div class="x"></div></th>' : r += "<th></th>" : m === o + a - 1 ? r += '<td><div class="dot plain">' + u[c] + "</div></td>" : r += "<td></td>";
       }
       o === 1 && a === 0 ? r += "<tr></thead>" : r += "</tr>";
     }

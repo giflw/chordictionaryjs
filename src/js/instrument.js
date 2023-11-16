@@ -233,7 +233,7 @@ export class Instrument {
             }
         }
 
-        // 3 - Combine the tabs from tabPool and store store the result in chordPool
+        // 3 - Combine the tabs from tabPool and store the result in chordPool
         let chordPool = [];
         // For each string
         for (string = 0; string < this.tuning.length; string++) {
@@ -461,7 +461,7 @@ export class Instrument {
                 if (gtrFret === 0) {
 
                     if (fretOnString === 0) {
-                        chordLayout += "<th><div class=\"dot open\"></div></th>";
+                        chordLayout += "<th><div class=\"dot open\">"+ fretsLabel[gtrString] +"</div></th>";
                     } else if (Number.isNaN(fretOnString)) {
                         chordLayout += "<th><div class=\"x\"></div></th>";
                     } else {

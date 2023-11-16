@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width" name="viewport">
+    <title>
+        Test getChordLayout
+    </title>
+    <link href="../dist/chordictionary.css" rel="stylesheet">
+    </link>
+    </meta>
+    </meta>
+</head>
+
+<body>
+    <div id="layouts"></div>
+
+    <script src="../dist/chordictionary.iife.js"></script>
+    <script>
+        let diagrams = '';
+        let guitar = new chordictionary.Instrument("EADGBE", 5, 5, 4);
+        
+        let chords = guitar.getChordsList('C').chordList.forEach((result) => {
+            console.log(result.tab.join(''));
+            diagrams +=
+                "<div style='width:140px;height:180px;margin:20px;float:left'>"
+                    + guitar.getChordLayout(result.tab.join(""), result.tab.join(' '))
+                    + "</div>";
+        });
+        document.getElementById("layouts").innerHTML = diagrams;
+    </script>
+</body>
+
+</html>
