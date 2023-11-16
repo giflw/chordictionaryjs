@@ -8,11 +8,11 @@ import { WORDING } from "./wordings.js";
 * To keep our formulas in a numeric format, we're using the integer notation
 * https://en.wikipedia.org/wiki/Pitch_class#Integer_notation
 */
-export const FORMULAS = [			
+export const FORMULAS = [
     { formula:"1-3-5",			integer:"0-4-7", 			name:"Major", 							    suffix:""			},
     { formula:"1-3-5#", 		integer:"0-4-8", 			name:"Augmented", 						    suffix:"aug"		},
     { formula:"1-b3-b5", 		integer:"0-3-6",    		name:"Diminished", 						    suffix:"dim"		},
-    { formula:"1-b3-5", 		integer:"0-3-7", 			name:"Minor", 							    suffix:"min"		},
+    { formula:"1-b3-5", 		integer:"0-3-7", 			name:"Minor", 							    suffix:"m"          },
     { formula:"1-b3-5-9", 		integer:"0-2-3-7", 			name:"Minor, added ninth", 			  	    suffix:"m(add9)"	},
     { formula:"1-3-4-5", 		integer:"0-4-5-7", 			name:"Added fourth", 			  		    suffix:"add4"		},
     { formula:"1-4-5", 			integer:"0-5-7", 			name:"Suspended fourth", 				    suffix:"sus4"		},
@@ -50,8 +50,8 @@ export const FORMULAS = [
 */
 const NAMING = {
     powerchord: ["5", "5 (powerchord)"],
-    major: ["Maj", "Major"],
-    minor: ["min", "Minor"],
+    major: ["", "Major"],
+    minor: ["m", "Minor"],
     sharp5: ["#5", "Sharp 5th"], 
     sharp11: ["#11", "Sharp 11th"],
     aug5: ["aug", "Augmented"], // +5

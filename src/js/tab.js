@@ -8,12 +8,8 @@ import * as INTERVAL from "./interval.js";
 * @return {Boolean}
 */
 export function isValid (tab) {
-    let pattern = new RegExp("^[x0-9]*$", "i");
-    if (pattern.test(tab)) {
-        return true;
-    } else {
-        return false;
-    }
+    let pattern = new RegExp("^[ x0-9]*$", "i");
+    return pattern.test(tab);
 }
 
 /** Split the tab into frets
@@ -22,7 +18,7 @@ export function isValid (tab) {
 * @return {Array} | Containing each fret
 */
 export function parse(tab, tuning) {
-    tab = tab.toLowerCase();
+    tab = tab.toLowerCase().trim();
     tuning = tuning || "EADGBE";
 
     if (!isValid(tab)) {
@@ -30,8 +26,13 @@ export function parse(tab, tuning) {
     }
 
     let tabArray = []; 
-
-    if (tab.length <= tuning.length) {
+    if (tab.includes(" ")) {
+        tab = tab.split(" ");
+        if (tab.length <= tuning.length) {
+            return tab;
+        }
+        throw WORDING.invalidTab;
+    } else if (tab.length <= tuning.length) {
         return tab.split("");
     } else if (tab.length === tuning.length * 2) {
 

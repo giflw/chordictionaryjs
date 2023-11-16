@@ -48,6 +48,20 @@ export class Instrument {
                 "tuning": this.tuning,
                 "chords": []
             };
+        results.first = () => results.chords.length > 0 ? results.chords[0] : {};
+        results.named = (name) => {
+            return results.chords.filter(chord => chord.name == name);
+        };
+        results.isNamed = (name) => {
+            return results.named(name).length > 0;
+        }
+
+        if (typeof tab === "object") {
+            tab = tab?.tab ? tab.tab : tab;
+            if (Array.isArray(tab)) {
+                tab = tab.join(" ");
+            }
+        }
 
         try {
             if (TAB.isValid(tab)) {
@@ -122,7 +136,7 @@ export class Instrument {
 
             results.chords.push({
                 "name": (root !== bass) ? name + "/" + bass : name,
-                "pitch": (root !== bass) ? root + "/" + bass : root,
+                "pitch": root,
                 "formula": r.formula,
                 "intervals": intervals,
                 "semitones": r.semitones,
@@ -155,6 +169,11 @@ export class Instrument {
                 chordList: [],
                 offset: 0
             };
+
+        results.first = () => results.chordList.length > 0 ? results.chordList[0] : {};
+        results.named = (name) => results.chordList.filter(chord => {
+            return this.getChordInfo(chord.tab).isNamed(name);
+        });
 
         // We define a chord "anatomy" for each type of chord we want to recognize
         const CHORD_TYPE = {
@@ -321,7 +340,7 @@ export class Instrument {
 
                         if (!isNaN(noteFret)) {
                             let noteIndex = noteFret + NOTES.indexOf(this.tuning[i]);
-							
+
                             if (noteFret === 0) chordAnatomy.openString = true;
 
                             // It's the root !
@@ -387,6 +406,7 @@ export class Instrument {
 
         options = (typeof options === "object") ? options : {};
 
+        tab = Array.isArray(tab) ? tab.join(" ") : tab;
         try {
             if (TAB.isValid(tab)) {
                 frets = TAB.parse(tab);

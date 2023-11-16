@@ -1,6 +1,6 @@
-import "@styles/main.scss";
+import "./scss/main.scss";
 
-import {
+export {
     Instrument,
     isValidTab, 
     isValidTuning,
@@ -9,15 +9,4 @@ import {
     parseChord,
     tuning,
     notes
-} from "@scripts/chordictionary.js";
-
-export { 
-    Instrument,
-    isValidTab, 
-    isValidTuning,
-    parseTuning,
-    parseTab,
-    parseChord,
-    tuning,
-    notes
-};
+} from "./js/chordictionary.js";

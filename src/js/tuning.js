@@ -3,7 +3,8 @@
 * @return {Boolean}
 */
 export function isValid (tuning) {
-    let pattern = new RegExp("^[#a-g]+$", "i");
+    // TODO add support for bemol??? (parse too)
+    let pattern = new RegExp("^[ #a-g]+$", "i");
     return pattern.test(tuning);
 }
 
@@ -12,11 +13,13 @@ export function isValid (tuning) {
 * @return {Array} | Containing each note
 */
 export function parse(tuning) {
+    tuning = tuning.trim();
     let tuningArray = [],
-        noSharps = new RegExp("^[a-g]+$", "i"),
-        containSharps = new RegExp("^[#a-g]+$", "i");
-
-    if (noSharps.test(tuning)) {
+        noSharps = new RegExp("^[ a-g]+$", "i"),
+        containSharps = new RegExp("^[ #a-g]+$", "i");
+    if (tuning.includes(" ") && containSharps.test(tuning)){
+        return tuning.split(" ");
+    } if (noSharps.test(tuning)) {
         return tuning.toUpperCase().split("");
 
     } else if (containSharps.test(tuning)) {

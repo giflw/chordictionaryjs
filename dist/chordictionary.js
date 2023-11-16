@@ -1,6 +1,6 @@
 const d = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"], T = ["1", "b2", "2", "b3", "3", "4", "b5", "5", "#5", "6", "b7", "7", "8", "b9", "9", "b10", "10", "11", "#11", "12", "b13", "13", "#13", "14"];
-function q(n, t) {
-  let i = d.indexOf(t) - d.indexOf(n);
+function q(n, e) {
+  let i = d.indexOf(e) - d.indexOf(n);
   return i < 0 && (i = d.length + i), i;
 }
 const N = {
@@ -15,7 +15,7 @@ const N = {
   { formula: "1-3-5", integer: "0-4-7", name: "Major", suffix: "" },
   { formula: "1-3-5#", integer: "0-4-8", name: "Augmented", suffix: "aug" },
   { formula: "1-b3-b5", integer: "0-3-6", name: "Diminished", suffix: "dim" },
-  { formula: "1-b3-5", integer: "0-3-7", name: "Minor", suffix: "min" },
+  { formula: "1-b3-5", integer: "0-3-7", name: "Minor", suffix: "m" },
   { formula: "1-b3-5-9", integer: "0-2-3-7", name: "Minor, added ninth", suffix: "m(add9)" },
   { formula: "1-3-4-5", integer: "0-4-5-7", name: "Added fourth", suffix: "add4" },
   { formula: "1-4-5", integer: "0-5-7", name: "Suspended fourth", suffix: "sus4" },
@@ -46,10 +46,10 @@ const N = {
   { formula: "1-3-5-7-9-13", integer: "0-2-4-7-9-11", name: "Major thirteen", suffix: "Maj13" },
   { formula: "1", integer: "0", name: "Single note", suffix: "" },
   { formula: "1-5", integer: "0-7", name: "Power chord", suffix: "5" }
-], F = {
+], k = {
   powerchord: ["5", "5 (powerchord)"],
-  major: ["Maj", "Major"],
-  minor: ["min", "Minor"],
+  major: ["", "Major"],
+  minor: ["m", "Minor"],
   sharp5: ["#5", "Sharp 5th"],
   sharp11: ["#11", "Sharp 11th"],
   aug5: ["aug", "Augmented"],
@@ -75,64 +75,64 @@ const N = {
   eleven: ["11", "11th"],
   thirteen: ["13", "13th"]
 };
-function R(n, t, i) {
-  let e, r, l = {};
+function R(n, e, i) {
+  let t, r, l = {};
   for (let u = 0; u < n.length; u++)
     if (!isNaN(n[u])) {
       r = n[u] + d.indexOf(i[u]), r > d.length - 1 && (r = r - d.length);
-      for (let s = 0; s < t.length; s++)
+      for (let s = 0; s < e.length; s++)
         l[d[r]] ? d[r] === d[s] && l[d[r]]++ : l[d[r]] = 1;
     }
-  for (let u = 0; u < t.length; u++)
-    if (t[u] in l)
-      e = !0;
+  for (let u = 0; u < e.length; u++)
+    if (e[u] in l)
+      t = !0;
     else {
-      e = !1;
+      t = !1;
       break;
     }
-  return e;
+  return t;
 }
-function L(n) {
-  let t, i;
+function F(n) {
+  let e, i;
   try {
     if (typeof n != "string")
       throw N.invalidChordName;
-    return n.search("#") === -1 ? (t = n.charAt(0), i = n.slice(1)) : (t = n.slice(0, 2).toUpperCase(), i = n.slice(2)), [t, i];
+    return n.search("#") === -1 ? (e = n.charAt(0), i = n.slice(1)) : (e = n.slice(0, 2).toUpperCase(), i = n.slice(2)), [e, i];
   } catch {
     return !1;
   }
 }
 function B(n) {
-  let t = n.map((s) => T[s]).filter((s) => s !== void 0), i = t.filter((s) => ["2"].includes(s)).length, e = {
-    seven: t.some((s) => ["b7", "7"].includes(s)),
-    third: t.some((s) => ["b3", "3"].includes(s)),
-    fifth: t.some((s) => ["b5", "5", "#5"].includes(s)),
-    majorNinth: t.includes("2") && !(!t.some((s) => ["b3", "3"].includes(s)) && i < 2)
+  let e = n.map((s) => T[s]).filter((s) => s !== void 0), i = e.filter((s) => ["2"].includes(s)).length, t = {
+    seven: e.some((s) => ["b7", "7"].includes(s)),
+    third: e.some((s) => ["b3", "3"].includes(s)),
+    fifth: e.some((s) => ["b5", "5", "#5"].includes(s)),
+    majorNinth: e.includes("2") && !(!e.some((s) => ["b3", "3"].includes(s)) && i < 2)
   }, r = [
-    { name: "powerchord", check: t.includes("5") && t.every((s) => ["1", "5"].includes(s)) },
-    { name: "major", check: t.includes("3") && !t.some((s) => ["6", "4"].includes(s) || e.seven || e.majorNinth) },
-    { name: "minor", check: t.includes("b3") },
-    { name: "aug5", check: t.includes("#5") && t.includes("3") && !t.includes("5") },
-    { name: "dim5", check: t.includes("b5") && t.includes("b3") && !t.includes("5") && !e.seven && !e.majorNinth },
-    { name: "seven", check: t.includes("b7") && !t.some((s) => ["6", "b9", "9"].includes(s) || e.majorNinth) },
-    { name: "major7", check: t.includes("7") && !t.some((s) => ["6", "4"].includes(s) || e.majorNinth) },
-    { name: "major9", check: e.majorNinth && t.includes("7") && !t.includes("6") },
-    { name: "six", check: t.includes("6") && !e.seven },
-    { name: "nine", check: e.majorNinth && t.includes("b7") },
-    { name: "eleven", check: t.includes("4") && e.seven && !t.includes("6") },
-    { name: "thirteen", check: t.includes("6") && e.seven },
-    { name: "add2", check: e.majorNinth && e.third && !e.seven && !t.includes("6") },
-    { name: "add4", check: e.third && t.includes("4") && !e.seven },
-    { name: "add9", check: e.majorNinth && e.third && !e.seven },
-    { name: "sus2", check: t.includes("2") && !e.third },
-    { name: "sus4", check: t.includes("4") && !e.third && !e.seven },
-    { name: "sharp5", check: t.includes("#5") && !t.some((s) => ["5", "3"].includes(s)) },
-    { name: "flat5", check: t.includes("b5") && !t.some((s) => ["5"].includes(s)) },
-    { name: "addflat5", check: ["5", "b5"].every((s) => t.includes(s)) && !e.seven },
-    { name: "sharp11", check: ["5", "b5"].every((s) => t.includes(s)) && e.seven },
-    { name: "flat9", check: t.includes("b2") && e.third },
-    { name: "b6", check: t.includes("#5") && t.includes("5") },
-    { name: "doubleflat5", check: t.includes("4") && e.third && !e.fifth && !e.seven }
+    { name: "powerchord", check: e.includes("5") && e.every((s) => ["1", "5"].includes(s)) },
+    { name: "major", check: e.includes("3") && !e.some((s) => ["6", "4"].includes(s) || t.seven || t.majorNinth) },
+    { name: "minor", check: e.includes("b3") },
+    { name: "aug5", check: e.includes("#5") && e.includes("3") && !e.includes("5") },
+    { name: "dim5", check: e.includes("b5") && e.includes("b3") && !e.includes("5") && !t.seven && !t.majorNinth },
+    { name: "seven", check: e.includes("b7") && !e.some((s) => ["6", "b9", "9"].includes(s) || t.majorNinth) },
+    { name: "major7", check: e.includes("7") && !e.some((s) => ["6", "4"].includes(s) || t.majorNinth) },
+    { name: "major9", check: t.majorNinth && e.includes("7") && !e.includes("6") },
+    { name: "six", check: e.includes("6") && !t.seven },
+    { name: "nine", check: t.majorNinth && e.includes("b7") },
+    { name: "eleven", check: e.includes("4") && t.seven && !e.includes("6") },
+    { name: "thirteen", check: e.includes("6") && t.seven },
+    { name: "add2", check: t.majorNinth && t.third && !t.seven && !e.includes("6") },
+    { name: "add4", check: t.third && e.includes("4") && !t.seven },
+    { name: "add9", check: t.majorNinth && t.third && !t.seven },
+    { name: "sus2", check: e.includes("2") && !t.third },
+    { name: "sus4", check: e.includes("4") && !t.third && !t.seven },
+    { name: "sharp5", check: e.includes("#5") && !e.some((s) => ["5", "3"].includes(s)) },
+    { name: "flat5", check: e.includes("b5") && !e.some((s) => ["5"].includes(s)) },
+    { name: "addflat5", check: ["5", "b5"].every((s) => e.includes(s)) && !t.seven },
+    { name: "sharp11", check: ["5", "b5"].every((s) => e.includes(s)) && t.seven },
+    { name: "flat9", check: e.includes("b2") && t.third },
+    { name: "b6", check: e.includes("#5") && e.includes("5") },
+    { name: "doubleflat5", check: e.includes("4") && t.third && !t.fifth && !t.seven }
   ], l = {
     add2: "add9",
     seven: "eleven",
@@ -143,23 +143,26 @@ function B(n) {
   }, u = r.filter((s) => s.check).map((s) => s.name);
   return u.length > 0 ? (u = u.filter((s) => !u.includes(l[s])), ["six", "add9"].every((s) => u.includes(s)) && (u.splice(u.indexOf("six"), 1), u[u.indexOf("add9")] = "sixnine"), {
     semitones: n,
-    formula: t,
-    qualityS: u.map((s) => F[s][0]),
-    qualityL: u.map((s) => F[s][1])
+    formula: e,
+    qualityS: u.map((s) => k[s][0]),
+    qualityL: u.map((s) => k[s][1])
   }) : !1;
 }
 function D(n) {
-  return new RegExp("^[#a-g]+$", "i").test(n);
+  return new RegExp("^[ #a-g]+$", "i").test(n);
 }
 function I(n) {
-  let t = [], i = new RegExp("^[a-g]+$", "i"), e = new RegExp("^[#a-g]+$", "i");
+  n = n.trim();
+  let e = [], i = new RegExp("^[ a-g]+$", "i"), t = new RegExp("^[ #a-g]+$", "i");
+  if (n.includes(" ") && t.test(n))
+    return n.split(" ");
   if (i.test(n))
     return n.toUpperCase().split("");
-  if (e.test(n)) {
+  if (t.test(n)) {
     n = n.toUpperCase();
     for (let r = 0; r < n.length; r++)
-      n.charAt(r) !== "#" && (n.charAt(r + 1) !== "#" ? t.push(n.slice(r, r + 1)) : (t.push(n.slice(r, r + 2)), r++));
-    return t;
+      n.charAt(r) !== "#" && (n.charAt(r + 1) !== "#" ? e.push(n.slice(r, r + 1)) : (e.push(n.slice(r, r + 2)), r++));
+    return e;
   } else
     return !1;
 }
@@ -183,43 +186,43 @@ const $ = {
   }
 };
 function V(n) {
-  let t = [], i = [];
-  for (let e = 0; e < n.length; e++) {
-    let r = n[e].filter((l) => l != null).join("");
-    t.includes(r) ? i.push(e) : t.push(r);
+  let e = [], i = [];
+  for (let t = 0; t < n.length; t++) {
+    let r = n[t].filter((l) => l != null).join("");
+    e.includes(r) ? i.push(t) : e.push(r);
   }
   return i;
 }
-function _(n, t) {
+function _(n, e) {
   if (typeof n == "object") {
-    typeof t == "string" && (t = t.toLowerCase());
+    typeof e == "string" && (e = e.toLowerCase());
     for (let i = 0; i < n.length; i++)
-      for (let e in n[i]) {
-        if (n[i][e] === t)
+      for (let t in n[i]) {
+        if (n[i][t] === e)
           return n[i];
-        if (typeof n[i][e] == "string" && n[i][e].toLowerCase() === t)
+        if (typeof n[i][t] == "string" && n[i][t].toLowerCase() === e)
           return n[i];
       }
-    throw "Couldn't find " + t + " in " + n;
+    throw "Couldn't find " + e + " in " + n;
   } else
     throw n + " is not an object.";
 }
-function A(n, t) {
+function A(n, e) {
   let i = !1;
   if (!Array.isArray(n))
     throw n + " is not an array.";
-  if (typeof t > "u")
+  if (typeof e > "u")
     throw "Missing parameter.";
-  switch (t) {
+  switch (e) {
     case "min":
       if (i = Math.min.apply(Math, n), isNaN(i)) {
-        for (let e = 0; e < n.length; e++)
-          if (!isNaN(n[e]))
+        for (let t = 0; t < n.length; t++)
+          if (!isNaN(n[t]))
             if (isNaN(i)) {
-              i = n[e];
+              i = n[t];
               continue;
-            } else if (n[e] < i)
-              i = n[e];
+            } else if (n[t] < i)
+              i = n[t];
             else
               continue;
       } else
@@ -227,78 +230,84 @@ function A(n, t) {
       break;
     case "max":
       if (i = Math.max.apply(Math, n), isNaN(i)) {
-        for (let e = 0; e < n.length; e++)
-          if (!isNaN(n[e]))
+        for (let t = 0; t < n.length; t++)
+          if (!isNaN(n[t]))
             if (isNaN(i)) {
-              i = n[e];
+              i = n[t];
               continue;
-            } else if (n[e] > i)
-              i = n[e];
+            } else if (n[t] > i)
+              i = n[t];
             else
               continue;
       } else
         return i;
       break;
     default:
-      i = U(n.join(""), t);
+      i = U(n.join(""), e);
       break;
   }
   return i;
 }
-function U(n, t, i) {
-  if (n += "", t += "", t.length <= 0)
+function U(n, e, i) {
+  if (n += "", e += "", e.length <= 0)
     return n.length + 1;
-  let e = 0, r = 1, l = i ? 1 : t.length;
+  let t = 0, r = 1, l = i ? 1 : e.length;
   for (; r >= 0; )
-    r = n.indexOf(t, r), r >= 0 && (++e, r += l);
-  return e;
+    r = n.indexOf(e, r), r >= 0 && (++t, r += l);
+  return t;
 }
 function C(n) {
-  return !!new RegExp("^[x0-9]*$", "i").test(n);
+  return new RegExp("^[ x0-9]*$", "i").test(n);
 }
-function k(n, t) {
-  if (n = n.toLowerCase(), t = t || "EADGBE", !C(n))
+function O(n, e) {
+  if (n = n.toLowerCase().trim(), e = e || "EADGBE", !C(n))
     throw N.invalidTab;
   let i = [];
-  if (n.length <= t.length)
-    return n.split("");
-  if (n.length === t.length * 2) {
-    for (let e = 0; e < n.length; e++)
-      e % 2 || i.push(n.slice(e, e + 2));
-    return i;
-  } else if (n.length > t.length)
-    if (A(n.split(""), "max") > 1) {
-      for (let e = 0; e < n.length; e++)
-        n.charAt(e).search(/[x02-9]/i) !== -1 || n.charAt(e) === 1 && n.charAt(e + 1).search(/x/i) !== -1 ? i.push(n.slice(e, e + 1)) : n.charAt(e + 1).search(/x/i) === -1 && (i.push(n.slice(e, e + 2)), e++);
+  if (n.includes(" ")) {
+    if (n = n.split(" "), n.length <= e.length)
+      return n;
+    throw N.invalidTab;
+  } else {
+    if (n.length <= e.length)
+      return n.split("");
+    if (n.length === e.length * 2) {
+      for (let t = 0; t < n.length; t++)
+        t % 2 || i.push(n.slice(t, t + 2));
       return i;
-    } else
-      throw N.invalidTab;
-  else
-    return !1;
+    } else if (n.length > e.length)
+      if (A(n.split(""), "max") > 1) {
+        for (let t = 0; t < n.length; t++)
+          n.charAt(t).search(/[x02-9]/i) !== -1 || n.charAt(t) === 1 && n.charAt(t + 1).search(/x/i) !== -1 ? i.push(n.slice(t, t + 1)) : n.charAt(t + 1).search(/x/i) === -1 && (i.push(n.slice(t, t + 2)), t++);
+        return i;
+      } else
+        throw N.invalidTab;
+    else
+      return !1;
+  }
 }
-function H(n, t) {
-  let i, e, r = [];
+function H(n, e) {
+  let i, t, r = [];
   for (let l = 0; l < n.length; l++)
-    isNaN(n[l]) ? r.push("x") : (e = t[l], i = parseInt(n[l]) + d.indexOf(e), i > d.length - 1 && (i = i - d.length), r.push(d[i]));
+    isNaN(n[l]) ? r.push("x") : (t = e[l], i = parseInt(n[l]) + d.indexOf(t), i > d.length - 1 && (i = i - d.length), r.push(d[i]));
   return r;
 }
 function W(n) {
-  let t = [];
-  for (let e = 0; e < n.length; e++) {
+  let e = [];
+  for (let t = 0; t < n.length; t++) {
     var i = [];
-    if (!(!n[e] || n[e].toLowerCase() === "x")) {
+    if (!(!n[t] || n[t].toLowerCase() === "x")) {
       for (let r = 0; r < n.length; r++) {
         if (!n[r] || n[r].toLowerCase() === "x") {
           i.push(null);
           continue;
         }
-        let l = q(n[e], n[r]);
+        let l = q(n[t], n[r]);
         i.push(l);
       }
-      i.includes(0) && t.push(i);
+      i.includes(0) && e.push(i);
     }
   }
-  return t;
+  return e;
 }
 /**Chordictionary v0.1.0-beta.4, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
 class Y {
@@ -308,13 +317,13 @@ class Y {
   * @param {Int} fretsToDisplay | Optional | The number of frets to be displayed when printing a chord, default 0 (auto-resize)
   * @param {Int} maxSpan | Optional | The maximum number of frets that can be played in one chord, default 5
   */
-  constructor(t, i, e, r) {
+  constructor(e, i, t, r) {
     try {
-      if (D(t))
-        this.tuning = I(t);
+      if (D(e))
+        this.tuning = I(e);
       else
         throw N.invalidTuning;
-      this.fretNumber = i, this.fretsToDisplay = isNaN(e) ? 0 : e + 1, this.maxSpan = isNaN(r) ? 4 : r;
+      this.fretNumber = i, this.fretsToDisplay = isNaN(t) ? 0 : t + 1, this.maxSpan = isNaN(r) ? 4 : r;
     } catch (l) {
       return console.error(l), !1;
     }
@@ -324,8 +333,8 @@ class Y {
   * @param {String} tab | Required | The chord tab
   * @return {Object}
   */
-  getChordInfo(t) {
-    let i = [], e = [], r = [], l = {
+  getChordInfo(e) {
+    let i = [], t = [], r = [], l = {
       // Will contain every chord information to be returned
       error: "",
       tab: [],
@@ -333,57 +342,58 @@ class Y {
       tuning: this.tuning,
       chords: []
     };
+    l.first = () => l.chords.length > 0 ? l.chords[0] : {}, l.named = (a) => l.chords.filter((o) => o.name == a), l.isNamed = (a) => l.named(a).length > 0, typeof e == "object" && (e = e != null && e.tab ? e.tab : e, Array.isArray(e) && (e = e.join(" ")));
     try {
-      if (C(t))
-        t = k(t), l.tab = t;
+      if (C(e))
+        e = O(e), l.tab = e;
       else
         throw N.invalidTab;
-    } catch (o) {
-      return l.error = o, l;
+    } catch (a) {
+      return l.error = a, l;
     }
     try {
-      i = H(t, this.tuning), l.notes = [...i];
+      i = H(e, this.tuning), l.notes = [...i];
     } catch {
       return l.error = N.failedToConvertTabIntoNotes, l;
     }
     try {
-      e = W(i);
+      t = W(i);
     } catch {
       return l.error = N.failedToCalculateFormula, l;
     }
-    if (e.length > 0) {
-      let o = V([...e]);
-      e = e.filter((a, g) => !o.includes(g));
+    if (t.length > 0) {
+      let a = V([...t]);
+      t = t.filter((o, p) => !a.includes(p));
     } else
       throw N.noMatch;
     try {
-      for (let o = 0; o < e.length; o++) {
-        let a = B([...e][o]);
-        if (a) {
-          var u = [...new Set(e[o])].filter((g) => !isNaN(g) && g !== null && g !== void 0).sort((g, c) => g - c).map((g) => T[g]);
+      for (let a = 0; a < t.length; a++) {
+        let o = B([...t][a]);
+        if (o) {
+          var u = [...new Set(t[a])].filter((p) => !isNaN(p) && p !== null && p !== void 0).sort((p, c) => p - c).map((p) => T[p]);
           r.push({
             formula: u,
-            semitones: a.semitones,
-            quality: a.qualityL,
-            suffix: a.qualityS
+            semitones: o.semitones,
+            quality: o.qualityL,
+            suffix: o.qualityS
           });
         }
       }
-    } catch (o) {
-      return l.error = o, l;
+    } catch (a) {
+      return l.error = a, l;
     }
-    r.sort((o, a) => o.quality.length - a.quality.length);
-    for (let o of r) {
-      var s = o.semitones.map((a) => T[a]).map((a) => a === void 0 ? null : a), b = i.filter((a) => a !== "x")[0], p = i[o.semitones.indexOf(0)], v = p + o.suffix.join("");
+    r.sort((a, o) => a.quality.length - o.quality.length);
+    for (let a of r) {
+      var s = a.semitones.map((o) => T[o]).map((o) => o === void 0 ? null : o), b = i.filter((o) => o !== "x")[0], v = i[a.semitones.indexOf(0)], g = v + a.suffix.join("");
       l.chords.push({
-        name: p !== b ? v + "/" + b : v,
-        pitch: p !== b ? p + "/" + b : p,
-        formula: o.formula,
+        name: v !== b ? g + "/" + b : g,
+        pitch: v,
+        formula: a.formula,
         intervals: s,
-        semitones: o.semitones,
+        semitones: a.semitones,
         notes: [...i],
-        quality: o.quality.join(" "),
-        suffix: o.suffix.join("")
+        quality: a.quality.join(" "),
+        suffix: a.suffix.join("")
       });
     }
     return l;
@@ -394,14 +404,15 @@ class Y {
   * @param {int} offset | Optional | Offset to skip a given number of chords
   * @return {Array} | A list of tabs
   */
-  getChordsList(t, i, e) {
-    e = e || 0;
-    let r = [], l, u, s = [], b, p, v = {
+  getChordsList(e, i, t) {
+    t = t || 0;
+    let r = [], l, u, s = [], b, v, g = {
       error: "",
       chordList: [],
       offset: 0
     };
-    const o = {
+    g.first = () => g.chordList.length > 0 ? g.chordList[0] : {}, g.named = (f) => g.chordList.filter((h) => this.getChordInfo(h.tab).isNamed(f));
+    const a = {
       // FIXME: rootIsLowestNote prevents a standard D chord to be tagged
       basic: {
         rootBelow4thFret: !0,
@@ -428,38 +439,38 @@ class Y {
       }
     };
     try {
-      if (typeof t == "string")
-        t = L(t), b = t[0], l = t[1], r.push(b), p = d.indexOf(b);
+      if (typeof e == "string")
+        e = F(e), b = e[0], l = e[1], r.push(b), v = d.indexOf(b);
       else
         throw N.invalidChordName;
       u = _(P, l), s = u.integer.split("-");
     } catch {
-      return v.error = N.invalidChordName, v;
+      return g.error = N.invalidChordName, g;
     }
     for (let f = 1; f < s.length; f++) {
-      let h = parseInt(s[f]) + parseInt(p);
+      let h = parseInt(s[f]) + parseInt(v);
       h > d.length - 1 && (h = h - d.length), r.push(d[h]);
     }
-    let a = [], g, c = 0;
+    let o = [], p, c = 0;
     for (c = 0; c < this.tuning.length; c++) {
-      a[c] = [], a[c].push("x");
+      o[c] = [], o[c].push("x");
       for (let f = 0; f < r.length; f++)
-        g = d.indexOf(r[f]) - d.indexOf(this.tuning[c]), g < 0 && (g = d.length + g), a[c].push(g), g + 12 < this.fretNumber && a[c].push(g + 12);
+        p = d.indexOf(r[f]) - d.indexOf(this.tuning[c]), p < 0 && (p = d.length + p), o[c].push(p), p + 12 < this.fretNumber && o[c].push(p + 12);
     }
     let m = [];
     for (c = 0; c < this.tuning.length; c++) {
       let f = m.length;
-      for (let h = 0; h < a[c].length; h++)
+      for (let h = 0; h < o[c].length; h++)
         if (m[h])
           for (let x = 0; x < f; x++)
             if (h === 0)
-              m[x].push(a[c][h]);
+              m[x].push(o[c][h]);
             else {
               let j = m[x].slice(0);
-              j.pop(), j.push(a[c][h]), m.push(j);
+              j.pop(), j.push(o[c][h]), m.push(j);
             }
         else
-          m[h] = [a[c][h]];
+          m[h] = [o[c][h]];
     }
     let w = [], G = (f, h) => {
       for (let x in f)
@@ -475,79 +486,79 @@ class Y {
       return !0;
     };
     try {
-      for (let f = e; f < m.length; f++) {
+      for (let f = t; f < m.length; f++) {
         if (R(m[f], r, this.tuning) && A(m[f], "max") - A(m[f], "min") < this.maxSpan) {
           let h = {
             openString: !1,
             frettedNotes: 0
           }, x = m[f].join(""), j = /[0-9]+[x]+[0-9]+/gi, S = /[0-9]+[x]+/gi;
           j.test(x) ? h.splittedChord = !0 : h.splittedChord = !1, S.test(x) ? h.noMuteAfterFirstNote = !1 : h.noMuteAfterFirstNote = !0;
-          for (let M = 0; M < m[f].length; M++) {
-            let y = m[f][M];
-            if (!isNaN(y)) {
-              let E = y + d.indexOf(this.tuning[M]);
-              y === 0 && (h.openString = !0), p === E && (h.frettedNotes === 0 && (h.rootIsLowestNote = !0), h.rootBelow4thFret = y <= 4, h.rootOnLowestFret = A(m[f], "min") >= y), (y > 0 && M < m[f].length - 1 && y === m[f][M - 1] || A(m[f], y) >= 3) && (h.barredString = isNaN(h.barredString) ? 1 : h.barredString + 1), h.frettedNotes++;
+          for (let y = 0; y < m[f].length; y++) {
+            let M = m[f][y];
+            if (!isNaN(M)) {
+              let E = M + d.indexOf(this.tuning[y]);
+              M === 0 && (h.openString = !0), v === E && (h.frettedNotes === 0 && (h.rootIsLowestNote = !0), h.rootBelow4thFret = M <= 4, h.rootOnLowestFret = A(m[f], "min") >= M), (M > 0 && y < m[f].length - 1 && M === m[f][y - 1] || A(m[f], M) >= 3) && (h.barredString = isNaN(h.barredString) ? 1 : h.barredString + 1), h.frettedNotes++;
             }
           }
-          let O = {
+          let L = {
             tab: m[f],
             tag: []
           };
-          Object.getOwnPropertyNames(o).forEach((M) => {
-            G(o[M], h) && O.tag.indexOf(M) && O.tag.push(M);
-          }), w.push(O);
+          Object.getOwnPropertyNames(a).forEach((y) => {
+            G(a[y], h) && L.tag.indexOf(y) && L.tag.push(y);
+          }), w.push(L);
         }
         if (i > 0 && i < m[f].length && w.length === i) {
-          e = f + 1;
+          t = f + 1;
           break;
         }
       }
     } catch (f) {
       console.error(f);
     }
-    return v.chordList = w, v.offset = e, v;
+    return g.chordList = w, g.offset = t, g;
   }
   /** Converts a tab notation into its graphic representation
   * @param {String} tab | Required | The tab notation
   * @param {Object} options | Optional | the easiest way is to pass a chord Object (e.g. getChordInfo("X32010").chords[0])
   * @return {String}
   */
-  getChordLayout(t, i) {
-    let e, r, l = this.fretsToDisplay;
-    i = typeof i == "object" ? i : {};
+  getChordLayout(e, i) {
+    let t, r, l = this.fretsToDisplay;
+    i = typeof i == "object" ? i : {}, e = Array.isArray(e) ? e.join(" ") : e;
     try {
-      C(t) ? e = k(t) : e = [0, 0, 0, 0, 0, 0];
+      C(e) ? t = O(e) : t = [0, 0, 0, 0, 0, 0];
     } catch {
       return !1;
     }
-    let u = i.notes ? i.notes : e, s = i.name ? i.name : e.join(" "), b = [];
-    for (let a = 0; a < e.length; a++)
-      isNaN(e[a]) === !1 && b.push(e[a]);
-    let p = Math.abs(Math.max.apply(Math, b)), v = Math.abs(Math.min.apply(Math, b)), o = 1;
-    p >= l && (o = v > 0 ? v : 1), o === 1 && p > 5 && (o = p - l + 2);
+    let u = i.notes ? i.notes : t, s = i.name ? i.name : t.join(" "), b = [];
+    for (let o = 0; o < t.length; o++)
+      isNaN(t[o]) === !1 && b.push(t[o]);
+    let v = Math.abs(Math.max.apply(Math, b)), g = Math.abs(Math.min.apply(Math, b)), a = 1;
+    v >= l && (a = g > 0 ? g : 1), a === 1 && v > 5 && (a = v - l + 2);
     try {
       if (l === 0)
-        l = p - o + 2;
-      else if (p - o + 1 > l - 1)
-        throw l = p - o + 2, N.croppedChordLayout;
-    } catch (a) {
-      console.error(a);
+        l = v - a + 2;
+      else if (v - a + 1 > l - 1)
+        throw l = v - a + 2, N.croppedChordLayout;
+    } catch (o) {
+      console.error(o);
     }
     r = '<table class="chord">';
-    for (let a = 0; a < l; a++) {
-      let g = a + o - 1;
-      o === 1 && a === 0 && (r += "<thead>"), g % 2 && g > 0 ? r += '<tr><th class="fret-number">' + g + "</th>" : r += "<tr><th></th>";
+    for (let o = 0; o < l; o++) {
+      let p = o + a - 1;
+      a === 1 && o === 0 && (r += "<thead>"), p % 2 && p > 0 ? r += '<tr><th class="fret-number">' + p + "</th>" : r += "<tr><th></th>";
       for (let c = 0; c < this.tuning.length; c++) {
-        let m = parseInt(e[c]);
-        a === 0 ? m === 0 ? r += '<th><div class="dot open">' + u[c] + "</div></th>" : Number.isNaN(m) ? r += '<th><div class="x"></div></th>' : r += "<th></th>" : m === o + a - 1 ? r += '<td><div class="dot plain">' + u[c] + "</div></td>" : r += "<td></td>";
+        let m = parseInt(t[c]);
+        o === 0 ? m === 0 ? r += '<th><div class="dot open">' + u[c] + "</div></th>" : Number.isNaN(m) ? r += '<th><div class="x"></div></th>' : r += "<th></th>" : m === a + o - 1 ? r += '<td><div class="dot plain">' + u[c] + "</div></td>" : r += "<td></td>";
       }
-      o === 1 && a === 0 ? r += "<tr></thead>" : r += "</tr>";
+      a === 1 && o === 0 ? r += "<tr></thead>" : r += "</tr>";
     }
     return r += '<caption align="bottom">' + s + "</caption>", r += "</table>", r;
   }
 }
 /**Chordictionary v0.1.0-beta.4, @license MIT, (c) 2019 Hubert Fauconnier + contributors*/
-const z = C, J = D, K = I, Q = k, X = L, Z = $, ee = d;
+const z = C, J = D, K = I, Q = O, X = F, Z = $, ee = d;
 export {
   Y as Instrument,
   z as isValidTab,
