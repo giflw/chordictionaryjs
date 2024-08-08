@@ -18,6 +18,7 @@ export class Instrument {
 	*/
     constructor (tuning, fretNumber, fretsToDisplay, maxSpan) {
         try {
+            tuning = Array.isArray(tuning) ? tuning.join(" ") : tuning;
             if(TUNING.isValid(tuning)) {
                 this.tuning = TUNING.parse(tuning);
             } else {

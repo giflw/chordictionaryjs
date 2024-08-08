@@ -1,6 +1,6 @@
-import { Instrument } from "./main.js";
+import { Instrument, tuning } from "./main.js";
 
-let instrument = new Instrument("EADGBE", 5, 5, 4);
+let instrument = new Instrument(tuning.ukulele.standard, 5, 5, 4);
 document.querySelectorAll(".chords > *").forEach( el => {
     const name = el.innerText.split("=")[0].trim();
     let tab = el.innerText.split("=")[1]?.trim();

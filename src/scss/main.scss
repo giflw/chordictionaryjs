@@ -5,6 +5,7 @@ $background-color_1: #333;
 $background-color_2: #b1b1b1;
 
 table.chord {
+	display: inline-table;
 	border-collapse: collapse;
 
 	caption {
